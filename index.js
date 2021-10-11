@@ -40,21 +40,14 @@ app.get('/comment', (req, res)=>{
             <button>Comment</button>
         </form>
     </div>
-    `
-    )
+    `);
 });
 
 app.post('/comment', (req, res) => {
     // get comment
     req.on('data', data => {
-        const parsed = data.toString('utf8').split('&');
-        const formData = {};
-        console.log(parsed);
-        // for (let pair of parsed) {
-        //     const [key, value] = pair.split('=');
-        //     formData[key] = value;
-        // }
-        console.log(formData);
+        const commentData = data.toString('utf8');
+        console.log(commentData);
     });
     res.send('Posted comment!');
 });
