@@ -3,6 +3,22 @@ const express = require('express');
 
 const app = express();
 
+
+const bodyParser = (req, res, next) => {
+    if (req.method === 'POST'){
+         // get access to email, password, passwordconfirmation
+        req.on('data', data => {
+        const parsed = data.toString('utf8').split('&');
+        const formData = {};
+        for (let pair of parsed){
+            const [key, value] = pair.split('=');
+            formData[key] = value;
+        }
+        console.log(formData);
+    });
+    } 
+};
+
 app.get('/', (req, res) => {
     res.send(`
     <div>
