@@ -28,6 +28,11 @@ app.post('/', (req, res) =>{
         }
         console.log(formData);
     });
+    //test function
+    // req.on('data', data =>{
+    //     const parsed = data.toString('utf8');
+    //     console.log(parsed);
+    // })
     res.send('Account created!');
 });
 
@@ -36,7 +41,7 @@ app.get('/comment', (req, res)=>{
     res.send(`
     <div>
         <form method="POST">
-            <input type="text" placeholder="Add a public comment.">
+            <input name="comment" type="text" placeholder="Add a public comment.">
             <button>Comment</button>
         </form>
     </div>
@@ -45,10 +50,10 @@ app.get('/comment', (req, res)=>{
 
 app.post('/comment', (req, res) => {
     // get comment
-    req.on('data', data => {
-        const commentData = data.toString('utf8');
-        console.log(commentData);
-    });
+    req.on('data', data =>{
+        const parsed = data.toString('utf8');
+        console.log(parsed);
+    })
     res.send('Posted comment!');
 });
 
