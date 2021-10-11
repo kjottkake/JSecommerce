@@ -6,7 +6,7 @@ const app = express();
 
 const bodyParser = (req, res, next) => {
     if (req.method === 'POST'){
-         // get access to email, password, passwordconfirmation
+         // get access to email, password, password confirmation
         req.on('data', data => {
         const parsed = data.toString('utf8').split('&');
         const formData = {};
@@ -14,11 +14,16 @@ const bodyParser = (req, res, next) => {
             const [key, value] = pair.split('=');
             formData[key] = value;
         }
-        console.log(formData);
+        req.body = formData;
+        next();
     });
-    } 
+    } else {
+        next();
+    }
 };
 
+
+//home endpoint
 app.get('/', (req, res) => {
     res.send(`
     <div>
@@ -33,26 +38,14 @@ app.get('/', (req, res) => {
     `);
 });
 
-app.post('/', (req, res) =>{
-    // get access to email, password, passwordconfirmation
-    req.on('data', data => {
-        const parsed = data.toString('utf8').split('&');
-        const formData = {};
-        for (let pair of parsed){
-            const [key, value] = pair.split('=');
-            formData[key] = value;
-        }
-        console.log(formData);
-    });
-    //test function
-    // req.on('data', data =>{
-    //     const parsed = data.toString('utf8');
-    //     console.log(parsed);
-    // })
+app.post('/', bodyParser, (req, res) =>{
+   console.log(req.body);
     res.send('Account created!');
 });
 
 
+
+//comment endpoint
 app.get('/comment', (req, res)=>{
     res.send(`
     <div>
@@ -76,6 +69,26 @@ app.post('/comment', (req, res) => {
     });
     res.send('Posted comment!');
 });
+
+
+//message endpoint
+app.get('/message', (req, res)=>{
+    res.send(`
+    <div>
+        <form method="POST">
+            <input name="message" type="text" placeholder="Write a message.">
+            <button>Send</button>
+        </form>
+    </div>
+    `);
+});
+
+
+app.post('/message', bodyParser, (req, res)=>{
+    console.log(req.body);
+    res.send('message received!');
+})
+
 
 app.listen(3000, () =>{
     console.log('listening');
